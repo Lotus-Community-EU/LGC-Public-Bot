@@ -7,9 +7,9 @@ Bot:
     StreamURL: https://twitch.tv/
   onlineTime: 1707003513298
 MySQL:
-  Host: 45.81.233.154
+  Host: ip
   Database: LotusGaming
   Username: root
-  Password: ChrisWille2856
+  Password: pass
   Port: '3306'
   UseSQL: true
