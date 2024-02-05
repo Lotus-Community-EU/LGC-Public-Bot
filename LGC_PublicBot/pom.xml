@@ -29,12 +29,17 @@
 	  <dependency>
         <groupId>net.dv8tion</groupId>
         <artifactId>JDA</artifactId>
-        <version>5.0.0-beta.5</version>
+        <version>5.0.0-beta.10</version>
       </dependency>
       <dependency>
 		  <groupId>me.carleslc.Simple-YAML</groupId>
 		  <artifactId>Simple-Yaml</artifactId>
 		  <version>1.8.3</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>com.mysql</groupId>
+		  <artifactId>mysql-connector-j</artifactId>
+		  <version>8.1.0</version>
 	  </dependency>
   </dependencies>
 </project>
