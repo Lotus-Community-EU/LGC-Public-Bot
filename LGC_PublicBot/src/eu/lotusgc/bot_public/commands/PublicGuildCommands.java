@@ -3,10 +3,9 @@ package eu.lotusgc.bot_public.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.lotusgc.bot_public.main.Main;
+import eu.lotusgc.bot_public.main.LotusController;
 import eu.lotusgc.bot_public.misc.SimpleMethods;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -14,41 +13,48 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class PublicGuildCommands extends ListenerAdapter{
 	
-	public static void registerCommands(JDA jda) {
-		int count = 0;
-		for(Guild guild : jda.getGuilds()) {
-			count++;
-			guild.updateCommands().addCommands(
-					Commands.slash("ping", "See the ping between bot and gateway.")
-						.addOption(OptionType.BOOLEAN, "ephemeral", "Whether or not the message should be sent as an ephemeral message."),
-					Commands.slash("help", "Sends you via DM the help page of the bot."),
-					Commands.slash("whois", "View account infos like online status, join datum, etc.")
-					    .addOption(OptionType.USER, "user", "The User you want the info about."),
-					Commands.slash("guildinfo", "View guild related infos like roles, users and such.")
-					).queue();
-		}
-		Main.logger.info("Registered commands on 'PublicGuildCommands' for " + count + " guilds.");
-	}
 	
+	@SuppressWarnings({ "deprecation" })
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 		User user = event.getUser();
 		Guild guild = event.getGuild();
-		if(event.getName().equals("ping")) {
-			long timeOld = System.currentTimeMillis();
+		if(event.getName().equals("user")) {
 			event.deferReply().queue();
-			event.getHook().sendMessage("Pong...").queue(rA -> {
-				rA.editMessageFormat("Pong! ``%d ms``\nGatewayping: ``%d ms", System.currentTimeMillis() - timeOld, event.getJDA().getGatewayPing()).queue();
-			});
+		}//else if(event.getName().equals("serverinfo")) {
+			//event.deferReply().queue();
+			//if(LotusController.serverList.contains(event.getOption("server").getAsString())) {
+			//	event.getHook().sendMessage("Server does exist...").queue();
+			//}else {
+			//	event.getHook().sendMessage("Hey, it seems this server does not exist!").queue();
+			//}
+		//}
+		else if(event.getName().equals("ping")) {
+			if(event.getOption("ephemeral").getAsBoolean()) {
+				long timeOld = System.currentTimeMillis();
+				event.deferReply(true).queue();
+				event.getHook().setEphemeral(true).sendMessage("Pong...").queue(rA -> {
+					rA.editMessageFormat("Pong! ``%d ms``\nGatewayping: ``%d ms", System.currentTimeMillis() - timeOld, event.getJDA().getGatewayPing()).queue();
+				});
+			}else {
+				long timeOld = System.currentTimeMillis();
+				event.deferReply(true).queue();
+				event.getHook().sendMessage("Pong...").queue(rA -> {
+					rA.editMessageFormat("Pong! ``%d ms``\nGatewayping: ``%d ms", System.currentTimeMillis() - timeOld, event.getJDA().getGatewayPing()).queue();
+				});
+			}
+			
 		}else if(event.getName().equalsIgnoreCase("help")) {
-			event.deferReply().queue();
+			event.deferReply(true).queue();
 			user.openPrivateChannel().queue(rA -> {
 				rA.sendMessage("Hiya! There is no help page yet!").queue();
 			});
+		}else if(event.getName().equals("guildinfo")) {
+			event.deferReply(true).queue();
+			EmbedBuilder eb = new EmbedBuilder();
+			eb.setDescription("");
 		}else if(event.getName().equals("whois")) {
 			event.deferReply().queue();
 			Member member = event.getOption("user").getAsMember();

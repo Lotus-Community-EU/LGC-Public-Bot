@@ -15,6 +15,8 @@ import java.util.logging.SimpleFormatter;
 import org.simpleyaml.configuration.file.YamlFile;
 
 import eu.lotusgc.bot_public.commands.PublicGuildCommands;
+import eu.lotusgc.bot_public.commands.Serverfinder;
+import eu.lotusgc.bot_public.commands.TicketCreator;
 import eu.lotusgc.bot_public.event.ReadyClass;
 import eu.lotusgc.bot_public.misc.MySQL;
 import net.dv8tion.jda.api.JDABuilder;
@@ -41,13 +43,14 @@ public class Main{
 		}
 		configLogger();
 		if(cfg != null) {
-			startBot(cfg);
 			connectSQL(cfg);
+			startBot(cfg);
 		}else {
 			System.out.println("Error! Shutting down bot.");
 			System.exit(0);
 		}
 		enableShutdownHook();
+		LotusController.loadData();
 	}
 	
 	private static void startBot(YamlFile cfg) {
@@ -56,6 +59,8 @@ public class Main{
 		builder.enableCache(CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.EMOJI, CacheFlag.FORUM_TAGS, CacheFlag.ONLINE_STATUS, CacheFlag.SCHEDULED_EVENTS, CacheFlag.VOICE_STATE);
 		builder.addEventListeners(new PublicGuildCommands());
 		builder.addEventListeners(new ReadyClass());
+		builder.addEventListeners(new Serverfinder());
+		builder.addEventListeners(new TicketCreator());
 		builder.build();
 	}
 	
@@ -106,14 +111,14 @@ public class Main{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
 		String date = sdf.format(new Date());
 		try {
-			FileHandler fileHandler = new FileHandler(configFolderName + "/logs/log-" + date + ".log.txt");
+			FileHandler fileHandler = new FileHandler(configFolderName + "/logs/log-" + date + ".txt");
 			fileHandler.setFormatter(new SimpleFormatter());
 			
 			ConsoleHandler consoleHandler = new ConsoleHandler();
 			consoleHandler.setLevel(Level.ALL);
 			
 			logger.addHandler(fileHandler);
-			logger.addHandler(consoleHandler);
+			//logger.addHandler(consoleHandler);
 			
 			logger.setLevel(Level.ALL);
 		}catch (Exception e) {
@@ -135,5 +140,4 @@ public class Main{
 		});
 		Runtime.getRuntime().addShutdownHook(printingHook);
 	}
-
 }

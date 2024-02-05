@@ -1,0 +1,15 @@
+Bot:
+  token: MTA3NzUzMTU2MTU3NjExNjM0NA.GybGia.ytKlMfjUuQE2tc3rAKMX2dEEdk-F6IXwhAiJuY
+  Activity:
+    Onlinestatus: ONLINE
+    StatusKey: WATCHING
+    StatusValue: over the users.
+    StreamURL: https://twitch.tv/
+  onlineTime: 1707003513298
+MySQL:
+  Host: 45.81.233.154
+  Database: LotusGaming
+  Username: root
+  Password: ChrisWille2856
+  Port: '3306'
+  UseSQL: true
