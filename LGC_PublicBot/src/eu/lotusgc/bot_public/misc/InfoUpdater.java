@@ -41,7 +41,7 @@ public class InfoUpdater extends TimerTask{
 			ps.setString(5, getRAMInfo(RAMInfo.ALLOCATED));
 			ps.setBoolean(6, true);
 			ps.setInt(7, uniqueMembers.size());
-			ps.setString(8, "staffBot");
+			ps.setString(8, "publicBot");
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -68,7 +68,7 @@ public class InfoUpdater extends TimerTask{
 				ps = MySQL.getConnection().prepareStatement("UPDATE bot_status SET isOnline = ?, onlineSince = ? WHERE botKey = ?");
 				ps.setBoolean(1, status);
 				ps.setLong(2, System.currentTimeMillis());
-				ps.setString(3, "staffBot");
+				ps.setString(3, "publicBot");
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -77,7 +77,7 @@ public class InfoUpdater extends TimerTask{
 			try {
 				ps = MySQL.getConnection().prepareStatement("UPDATE bot_status SET isOnline = ? WHERE botKey = ?");
 				ps.setBoolean(1, status);
-				ps.setString(2, "staffBot");
+				ps.setString(2, "publicBot");
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
