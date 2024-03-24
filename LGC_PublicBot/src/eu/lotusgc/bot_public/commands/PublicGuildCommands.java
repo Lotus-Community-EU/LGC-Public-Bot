@@ -3,10 +3,10 @@ package eu.lotusgc.bot_public.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.lotusgc.bot_public.main.LotusController;
 import eu.lotusgc.bot_public.misc.SimpleMethods;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -81,19 +81,31 @@ public class PublicGuildCommands extends ListenerAdapter{
 				}else {
 					list.add("Timed out: no");
 				}
+				if(member.getActivities().size() != 0) {
+					StringBuilder sb = new StringBuilder();
+					for(Activity activity : member.getActivities()) {
+						sb.append(activity.getName());
+						sb.append(", ");
+					}
+					String result = sb.toString().substring(0, sb.toString().length() - 2);
+					list.add("Activities: " + result);
+				}
+				if(member.getVoiceState().getChannel() != null) {
+					list.add("Chilling in " + member.getVoiceState().getChannel().getAsMention());
+				}
 				if(member.isBoosting()) {
 					list.add("Boosts the server: yes, since " + SimpleMethods.retDate(member.getTimeBoosted(), "dd.MM.yy"));
 				}else {
 					list.add("Boosts the server: no");
 				}
 				if(member.getOnlineStatus() == OnlineStatus.ONLINE) {
-					list.add("Online status: ``online``");
+					list.add("Online status: ``online`` <:online:1221278970046185553>");
 				}else if(member.getOnlineStatus() == OnlineStatus.IDLE) {
-					list.add("Online status: ``idle``");
+					list.add("Online status: ``idle`` <:idle:1221278972051062856>");
 				}else if(member.getOnlineStatus() == OnlineStatus.DO_NOT_DISTURB) {
-					list.add("Online status: ``do not disturb``");
+					list.add("Online status: ``do not disturb`` <:dnd:1221278973074346045>");
 				}else if(member.getOnlineStatus() == OnlineStatus.OFFLINE) {
-					list.add("Online status: ``offline``");
+					list.add("Online status: ``offline`` <:offline:1221279431809699950>");
 				}
 				StringBuilder sbI = new StringBuilder();
 				for(String s : list) {
