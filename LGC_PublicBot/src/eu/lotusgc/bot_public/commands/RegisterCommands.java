@@ -22,6 +22,8 @@ public class RegisterCommands {
 				Commands.slash("user", "See the user from our Minecraft Playerdatabase."),
 				Commands.slash("serverinfo", "View detailed Informations about a game server."),
 				Commands.slash("ticket", "Need help? Create a ticket!"),
+				Commands.slash("status", "Sets the online status [Only useable by bot owner]"),
+				Commands.slash("activity", "Sets the activity [Only useable by bot owner]"),
 				
 				//Private voice 
 				Commands.slash("adminvoice-category", "Administration for 'voice-channel'.")
