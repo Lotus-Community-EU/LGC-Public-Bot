@@ -15,12 +15,14 @@ import java.util.logging.SimpleFormatter;
 import org.simpleyaml.configuration.file.YamlFile;
 
 import eu.lotusgc.bot_public.commands.PublicGuildCommands;
+import eu.lotusgc.bot_public.commands.PublicVoiceHandler;
 import eu.lotusgc.bot_public.commands.Serverfinder;
 import eu.lotusgc.bot_public.commands.TicketCreator;
 import eu.lotusgc.bot_public.event.ReadyClass;
 import eu.lotusgc.bot_public.misc.MySQL;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Main{
@@ -55,12 +57,14 @@ public class Main{
 	
 	private static void startBot(YamlFile cfg) {
 		JDABuilder builder = JDABuilder.createDefault(cfg.getString("Bot.token"));
-		builder.enableIntents(GatewayIntent.GUILD_MODERATION, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_VOICE_STATES);
+		builder.enableIntents(GatewayIntent.GUILD_MODERATION, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_MEMBERS);
 		builder.enableCache(CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.EMOJI, CacheFlag.FORUM_TAGS, CacheFlag.ONLINE_STATUS, CacheFlag.SCHEDULED_EVENTS, CacheFlag.VOICE_STATE);
+		builder.setMemberCachePolicy(MemberCachePolicy.ALL);
 		builder.addEventListeners(new PublicGuildCommands());
 		builder.addEventListeners(new ReadyClass());
 		builder.addEventListeners(new Serverfinder());
 		builder.addEventListeners(new TicketCreator());
+		builder.addEventListeners(new PublicVoiceHandler());
 		builder.build();
 	}
 	

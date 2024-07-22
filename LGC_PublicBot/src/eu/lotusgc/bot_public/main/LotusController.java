@@ -18,19 +18,23 @@ public class LotusController {
 	
 	public static void loadData() {
 		try {
-			PreparedStatement ps = MySQL.getConnection().prepareStatement("SELECT servername FROM mc_serverstats");
+			PreparedStatement ps = MySQL.getConnection().prepareStatement("SELECT servername,isMinigame,isHiddenAPI FROM mc_serverstats");
 			ResultSet rs = ps.executeQuery();
 			int data = 0;
+			int total = 0;
 			while(rs.next()) {
-				data++;
-				serverList.add(rs.getString("servername"));
+				total++;
+				if(!rs.getBoolean("isMinigame") || !rs.getBoolean("isHiddenAPI")) {
+					data++;
+					serverList.add(rs.getString("servername"));
+				}
 			}
 			StringBuilder sb = new StringBuilder();
 			serverList.forEach(l -> {
 				sb.append(l);
 				sb.append(", ");
 			});
-			Main.logger.info("Loaded data from ``mc_serverstats`` - got " + data + " entries: " + sb.toString().substring(0, (sb.toString().length() - 2)));
+			Main.logger.info("Loaded data from ``mc_serverstats`` - got " + data + "out of " + total + " entries: " + sb.toString().substring(0, (sb.toString().length() - 2)));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
